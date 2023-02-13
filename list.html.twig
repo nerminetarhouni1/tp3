@@ -1,0 +1,64 @@
+<div align="center">
+<table  border="2">
+<tr>
+<th>Ref</th>
+<th>Titre</th>
+<th>Description</th>
+<th>date debut</th>
+<th>date fin</th>
+<th>nb de participants</th></tr>
+{% for f in formations %}
+<tr align="center">
+<td>{{f.ref}}</td>
+<td>{{f.Titre | upper}}</td>
+<td>{{f.Description}}</td>
+<td>{{f.date_debut}}</td>
+<td>{{f.date_fin}}</td>
+<td>{{f.nb_participants}}
+{% if f.nb_participants == 0 %}
+ <form action="{{path('getname',{'nom': f.Titre }) }}">
+<button>Participer</button>
+</form>
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+<h3>Nombre de formations:</br>{{formations|length}} </h3>
+
+
+
+<h3>Les titres des formations théorique: </h3>
+{% for f in formations %}
+{% if f.Description == "formation theorique" %}
+<p>{{f.Titre}}</p>
+{% endif %}
+{% endfor %}
+
+
+
+<h3>le titre de la formation ayant le plus grand nombre de participants:</h3>
+{% set maxValue = 0 %}
+{% for p in formations %}
+        {% set maxValue = max(p.nb_participants, maxValue) %}
+    {% endfor %}
+{% for p in formations %}
+{% if p.nb_participants == maxValue %}
+<p>{{p.Titre}}</p>
+{% endif %}
+{% endfor %}
+
+
+<h3>le nombre total de participants dans toutes les formations:</h3>
+{% set sum = 0 %}
+{% for p in formations %}
+{% set sum = (p.nb_participants + sum) %}
+{% endfor %}
+<p>{{sum}}</p>
+
+
+
+{% if formations is empty %}
+<p>pas de formations </p>
+ {% endif %}
+</div>
